@@ -30,7 +30,7 @@ public final class LumaReloaded extends JavaPlugin {
         lazyFileLoader = new ThreadAsyncLazyFileLoader();
         this.getDataFolder().mkdir();
         (new File(this.getDataFolder(), "images")).mkdir();
-        if /*(!loadResources())*/ (false) {
+        if /*(!loadResources())*/ (false) { // I don't know why loadResources() returns false, nor why the plugin doesn't work when this condition is deleted
             Bukkit.getPluginManager().disablePlugin(this);
         } else {
             Settings.loadConfigYml();
