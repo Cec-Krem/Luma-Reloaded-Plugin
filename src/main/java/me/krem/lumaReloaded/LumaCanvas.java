@@ -41,21 +41,15 @@ public class LumaCanvas {
         output.setCursors(this.mcc);
         if (this.state == LumaCanvas.CanvasState.DORMANT) {
             LumaReloaded.lazyFileLoader.addCanvasToLoad(this);
-            this.state = LumaCanvas.CanvasState.LOADING;
         }
 
-        if (this.state == LumaCanvas.CanvasState.LOADING) {
-            LumaReloaded.loadingIcon.drawTile(0, 0, output);
-        } else if (this.backBuffer != null && x >= 0 && y >= 0 && x < this.width && y < this.height) {
+        if (this.backBuffer != null && x >= 0 && y >= 0 && x < this.width && y < this.height) {
             int bufferOffset = 16384 * (this.width * (this.height * this.frameIndex + y) + x);
 
             for(int i = 0; i < 16384; ++i) {
                 output.setPixel(i % 128, i / 128, this.backBuffer[bufferOffset++]);
             }
-        } else {
-            LumaReloaded.brokenFileIcon.drawTile(0, 0, output);
         }
-
     }
 
     public void setData(int frames, byte[] data) {

@@ -1,11 +1,7 @@
 package me.krem.lumaReloaded;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import java.awt.image.BufferedImage;
-import java.io.DataInputStream;
 import java.io.File;
-import java.util.ArrayList;
-import javax.imageio.ImageIO;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -30,8 +26,8 @@ public final class LumaReloaded extends JavaPlugin {
         lazyFileLoader = new ThreadAsyncLazyFileLoader();
         this.getDataFolder().mkdir();
         (new File(this.getDataFolder(), "images")).mkdir();
-        if /*(!loadResources())*/ (false) { // I don't know why loadResources() returns false, nor why the plugin doesn't work when this condition is deleted
-            Bukkit.getPluginManager().disablePlugin(this);
+        if (false) {
+            Bukkit.getPluginManager().disablePlugin(this); // I don't know why when I delete this condition the plugin doesn't work ?
         } else {
             Settings.loadConfigYml();
             CanvasManager.loadDataYml();
@@ -55,38 +51,6 @@ public final class LumaReloaded extends JavaPlugin {
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         return CommandProcessor.onCommand(sender, command, label, args);
-    }
-
-    private static boolean loadResources() {
-        try {
-            BufferedImage fontMapImg = ImageIO.read(LumaReloaded.class.getResourceAsStream("/fontmap.png"));
-            fontMap = new boolean[fontMapImg.getWidth() * fontMapImg.getHeight()];
-
-            for(int j = 0; j < fontMapImg.getHeight(); ++j) {
-                for(int i = 0; i < fontMapImg.getWidth(); ++i) {
-                    if (fontMapImg.getRGB(i, j) == -16777216) {
-                        fontMap[fontMapImg.getWidth() * j + i] = true;
-                    } else {
-                        fontMap[fontMapImg.getWidth() * j + i] = false;
-                    }
-                }
-            }
-
-            byte[] temp = new byte[16384];
-            DataInputStream dis = new DataInputStream(LumaReloaded.class.getResourceAsStream("/error"));
-            dis.readFully(temp);
-            dis.close();
-            brokenFileIcon = new LumaCanvas("Error", 1, 1, 1, 20, new ArrayList());
-            brokenFileIcon.setData(1, temp);
-            temp = new byte[65536];
-            dis = new DataInputStream(LumaReloaded.class.getResourceAsStream("/loading"));
-            dis.readFully(temp);
-            loadingIcon = new LumaCanvas("Loading", 1, 1, 4, 10, new ArrayList());
-            loadingIcon.setData(4, temp);
-            return true;
-        } catch (Exception var3) {
-            return false;
-        }
     }
 
     static {
